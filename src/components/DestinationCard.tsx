@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 interface DestinationCardProps {
+  id: string;
   image: string;
   title: string;
   description: string;
@@ -9,6 +10,7 @@ interface DestinationCardProps {
 }
 
 const DestinationCard = ({
+  id,
   image,
   title,
   description,
@@ -37,10 +39,11 @@ const DestinationCard = ({
 
   return (
     <div
+      id={id}
       ref={cardRef}
-      className={`card-destination group cursor-pointer ${
+      className={`card-destination group cursor-pointer transition-all duration-700 ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-      } transition-all duration-700`}
+      }`}
     >
       {/* Image Container */}
       <div className="relative h-[500px] md:h-[600px] overflow-hidden">
