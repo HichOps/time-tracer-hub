@@ -2,6 +2,7 @@ import DestinationCard from './DestinationCard';
 
 const destinations = [
   {
+    id: 'paris-1889',
     image: 'https://i.imgur.com/XSMPDtu.jpeg',
     title: 'Paris 1889',
     description:
@@ -9,6 +10,7 @@ const destinations = [
     ambiance: 'Nocturne, électrique, foule élégante',
   },
   {
+    id: 'cretace',
     image: 'https://i.imgur.com/icPa5lp.jpeg',
     title: 'Crétacé (-66M)',
     description:
@@ -16,6 +18,7 @@ const destinations = [
     ambiance: 'Coucher de soleil intense, brume, nature sauvage',
   },
   {
+    id: 'florence-1504',
     image: 'https://i.imgur.com/qyQcyGq.jpeg',
     title: 'Florence 1504',
     description:
