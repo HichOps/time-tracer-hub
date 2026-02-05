@@ -92,13 +92,15 @@
   }
 
   .btn-gold:hover {
-    box-shadow: 0 0 50px hsl(38 85% 55% / 0.6);
-    transform: translateY(-2px);
+    box-shadow: 
+      0 0 60px hsl(38 85% 55% / 0.6),
+      0 0 100px hsl(38 85% 55% / 0.3);
+    transform: translateY(-3px);
   }
 
   .btn-gold::before {
     content: '';
-    @apply absolute inset-0 opacity-0 transition-opacity duration-300;
+    @apply absolute inset-0 opacity-0 transition-opacity duration-500;
     background: linear-gradient(135deg, hsl(45 90% 65%), hsl(38 80% 55%));
   }
 
@@ -106,27 +108,49 @@
     @apply opacity-100;
   }
 
+  .btn-gold::after {
+    content: '';
+    @apply absolute top-0 left-[-100%] w-full h-full transition-all duration-700;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(0 0% 100% / 0.2),
+      transparent
+    );
+  }
+
+  .btn-gold:hover::after {
+    left: 100%;
+  }
+
   .glow-gold {
     box-shadow: 0 0 40px hsl(38 85% 55% / 0.3);
   }
 
   .card-destination {
-    @apply relative overflow-hidden rounded-2xl transition-all duration-500;
+    @apply relative overflow-hidden rounded-2xl transition-all duration-500 ease-out;
     box-shadow: 0 25px 50px -12px hsl(0 0% 0% / 0.5);
   }
 
   .card-destination:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 35px 60px -15px hsl(0 0% 0% / 0.6);
+    transform: translateY(-12px);
+    box-shadow: 
+      0 40px 80px -20px hsl(0 0% 0% / 0.7),
+      0 0 40px hsl(38 85% 55% / 0.15);
   }
 
-  .card-destination::after {
+  .card-destination::before {
     content: '';
-    @apply absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-500;
-    background: linear-gradient(135deg, hsl(38 85% 55% / 0.1), transparent);
+    @apply absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-700 z-10;
+    background: linear-gradient(
+      135deg,
+      hsl(38 85% 55% / 0.08) 0%,
+      transparent 50%,
+      hsl(38 85% 55% / 0.05) 100%
+    );
   }
 
-  .card-destination:hover::after {
+  .card-destination:hover::before {
     @apply opacity-100;
   }
 
@@ -152,7 +176,19 @@
 
   .chat-bubble:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 50px hsl(38 85% 55% / 0.7);
+    box-shadow: 
+      0 0 60px hsl(38 85% 55% / 0.7),
+      0 0 100px hsl(38 85% 55% / 0.4);
+  }
+
+  .chat-bubble::after {
+    content: '';
+    @apply absolute inset-0 rounded-full opacity-0 transition-opacity duration-500;
+    background: linear-gradient(135deg, hsl(45 90% 65%), hsl(38 80% 55%));
+  }
+
+  .chat-bubble:hover::after {
+    @apply opacity-100;
   }
 }
 

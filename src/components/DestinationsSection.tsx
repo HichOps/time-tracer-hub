@@ -8,6 +8,7 @@ const destinations = [
     description:
       "L'Exposition Universelle comme vous ne l'avez jamais vue. Admirez la Tour Eiffel dans sa couleur rouge d'origine sous les projecteurs de la nuit parisienne.",
     ambiance: 'Nocturne, électrique, foule élégante',
+    badges: ['Romance', 'Gastronomie', 'Guide Inclus'],
   },
   {
     id: 'cretace',
@@ -16,6 +17,7 @@ const destinations = [
     description:
       'Observez les géants de la préhistoire dans leur habitat naturel. Un safari au crépuscule, entre volcans et forêts primitives.',
     ambiance: 'Coucher de soleil intense, brume, nature sauvage',
+    badges: ['Aventure', 'Nature Sauvage', 'Sécurité Max'],
   },
   {
     id: 'florence-1504',
@@ -24,6 +26,7 @@ const destinations = [
     description:
       'Rencontrez Michel-Ange au cœur de la Renaissance. Flânez sur la Piazza della Signoria parmi les marchands et les artistes.',
     ambiance: 'Ensoleillée, architecturale, historique',
+    badges: ['Art & Histoire', 'Architecture', 'Costume d\'époque'],
   },
 ];
 
