@@ -201,3 +201,49 @@ Le projet a suivi une méthodologie de **"Reclaim & Refactor"** :
 
 ## 📄 Licence
 MIT License - Projet pédagogique M1/M2 Digital & IA (2026).
+
+---
+
+## 🎤 FAQ Technique (Préparation Jury)
+
+Anticipation des questions techniques pour la soutenance orale.
+
+### 🤖 IA & Mistral
+
+| # | Question | Réponse |
+|---|----------|---------|
+| 1 | **Pourquoi avoir choisi Mistral AI plutôt qu'OpenAI ou Anthropic ?** | Mistral est une **solution française souveraine** avec un excellent rapport qualité/coût. Le modèle `mistral-small-latest` offre des réponses de qualité équivalente à GPT-3.5 pour un coût 3x inférieur, ce qui est cohérent avec la contrainte "outils gratuits/tier accessible" du projet. De plus, Mistral respecte mieux le RGPD. |
+| 2 | **Comment as-tu sécurisé la clé API Mistral ?** | La clé est stockée dans un fichier `.env` **exclu du versioning** via `.gitignore`. En production (Vercel), elle est injectée via les **Environment Variables** du dashboard. Le code vérifie `import.meta.env.VITE_MISTRAL_API_KEY` et active un **fallback local** si la clé est absente, garantissant une expérience dégradée mais fonctionnelle. |
+| 3 | **Qu'est-ce que le System Prompt et pourquoi est-il si long ?** | Le System Prompt est l'**instruction initiale** envoyée au LLM avant chaque conversation. J'utilise du **Few-Shot Prompting** (exemples de réponses attendues) pour forcer le modèle à rester dans son rôle de "Chronos, concierge temporel Heisenberg Prod.". Les 80+ lignes incluent des faits historiques précis (Paris 1889, Florence 1504) pour éviter les hallucinations et des **guardrails** pour filtrer les hors-sujets. |
+
+### 🏗️ Architecture & Hooks
+
+| # | Question | Réponse |
+|---|----------|---------|
+| 4 | **Pourquoi avoir extrait la logique dans des Custom Hooks ?** | C'est l'application du principe **SoC (Separation of Concerns)**. Les hooks comme `useChatbot` ou `useCursor` encapsulent toute la logique métier, laissant les composants React **100% déclaratifs**. Cela facilite les tests unitaires, la réutilisation, et permet à un développeur de modifier la logique sans toucher au JSX. |
+| 5 | **Quel est l'avantage d'un dossier `services/` séparé ?** | Le dossier `services/` isole les **appels API externes** (Mistral). Si demain je veux migrer vers OpenAI, je modifie uniquement `mistralService.ts` sans toucher aux hooks ni aux composants. C'est le pattern **Repository/Gateway** adapté au frontend, conforme aux principes SOLID (Single Responsibility). |
+| 6 | **Pourquoi avoir supprimé 42 composants Shadcn/UI ?** | Lovable a généré un projet avec **tous** les composants Shadcn par défaut. Après audit, j'ai identifié que seuls 7 étaient réellement utilisés. Supprimer le code mort réduit le **bundle size**, accélère le build, et améliore la lisibilité du projet. C'est une application du principe YAGNI (You Ain't Gonna Need It). |
+
+### ⚡ Performance & Bun
+
+| # | Question | Réponse |
+|---|----------|---------|
+| 7 | **Pourquoi Bun plutôt que npm ou yarn ?** | Bun est un runtime JavaScript **3x plus rapide** que Node.js pour l'installation des dépendances et le build. Sur ce projet, `bun install` prend ~2 secondes vs ~15 secondes avec npm. En production, cela accélère les pipelines CI/CD. Bun est aussi compatible à 100% avec l'écosystème npm, donc zéro risque de régression. |
+| 8 | **Comment as-tu optimisé le curseur personnalisé à 60 FPS ?** | Le curseur initial utilisait `useState` pour tracker la position, causant des **re-renders** à chaque mouvement de souris. J'ai migré vers `useMotionValue` et `useSpring` de Framer Motion, qui mettent à jour les valeurs **hors du cycle React** via le GPU. Résultat : fluidité 60 FPS sans aucun re-render du composant. |
+
+### 🎭 Branding & Identité
+
+| # | Question | Réponse |
+|---|----------|---------|
+| 9 | **Comment as-tu personnalisé l'expérience pour Heisenberg Prod. ?** | J'ai remplacé toutes les mentions "Lovable" par l'identité **Heisenberg Prod.** : logo, footer (adresse Lyon Perrache), System Prompt de Chronos, et même les méta-données SEO (`index.html`). Le Design System dans `styles.ts` utilise des tokens cohérents (or Heisenberg, dégradés temporels) pour une identité visuelle unifiée. |
+| 10 | **Pourquoi Lyon 1986 ? C'est réel ou fictif ?** | C'est un **easter egg narratif** cohérent avec l'univers du voyage temporel. 1986 est l'année de fondation fictive de l'agence, et Lyon Perrache (12 bis Cour de Verdun Gensoul, 69002) est une adresse réelle qui ancre l'agence dans le monde physique. Cela renforce l'**immersion** et donne du crédit au storytelling de Chronos. |
+
+### 🧠 Méthodologie IA
+
+| # | Question Bonus | Réponse |
+|---|----------------|---------|
+| 11 | **Quel a été le rôle de chaque IA dans ton workflow ?** | **Gemini 3 Pro** : Architecte stratégique pour l'audit, la planification des phases et la rédaction des prompts. **Claude 4.5 Opus** (via GitHub Copilot) : Agent d'exécution en local pour le refactoring complexe et l'implémentation des hooks. **Mistral** : Moteur de l'agent conversationnel en production. Chaque IA a un rôle distinct, évitant la confusion des responsabilités. |
+
+> 💡 **Conseil oral** : Pour chaque réponse, commence par le "quoi" (ce que tu as fait), puis le "pourquoi" (le bénéfice technique ou utilisateur).
+
+---
