@@ -30,14 +30,38 @@ Cette webapp "Triple A" offre une expérience de voyage temporel complète :
 
 ---
 
-## 🛠 Stack & Outils Utilisés
+## 🚀 Genèse du Projet
+
+Ce projet illustre une démarche de **"Vibe Coding" maîtrisé** : partir d'un prototype généré pour aboutir à une architecture industrielle optimisée.
+
+### Étape 1 – Bootstrap Initial
+* **[Lovable.dev](https://lovable.dev)** : Génération du squelette React/Vite/Tailwind et de l'interface initiale via prompts conversationnels (pas de code from scratch).
+* **[Nano Banana (Bananaml)](https://www.nano-banana.com/)** : Création des visuels cinématographiques des destinations temporelles (images héros).
+* **Gemini 3 Pro** : Rédaction et itération des prompts pour Lovable et Nano Banana.
+
+### Étape 2 – Réappropriation & Optimisation
+* **Audit Clean Code** complet du code généré par Lovable.
+* **Extraction** de la logique en hooks personnalisés (`useQuiz`, `useChatbot`, `useCursor`...).
+* **Suppression** de 42 composants Shadcn/UI inutilisés (49 → 7).
+* **Optimisation GPU** des animations (Framer Motion `useMotionValue`).
+* **Intégration** de Mistral AI pour un agent conversationnel premium.
+* **Refactoring** en architecture industrielle avec types, constantes, et services centralisés.
+
+> 💡 **Takeaway** : Les outils de génération IA sont d'excellents accélérateurs, mais la valeur réside dans la capacité à auditer, restructurer et optimiser le code produit.
+
+---
+
+## �🛠 Stack & Outils Utilisés
 
 Le projet a été entièrement développé à l'aide d'**outils gratuits** et de plans "tier" accessibles, démontrant qu'une haute qualité de production est possible sans budget logiciel conséquent.
 
 ### 🤖 Intelligence Artificielle & Pilotage
-* **Gemini 3 Pro** : Architecte stratégique utilisé pour l'audit de code, la planification des phases de refactoring et la mise en conformité du projet.
+* **Gemini 3 Pro** : Rédaction des prompts pour Lovable et Nano Banana + Architecte stratégique pour l'audit de code et la planification du refactoring.
 * **GitHub Copilot (Claude 4.5 Opus)** : Agent de développement principal en local (VS Code) pour le refactoring complexe et l'implémentation des hooks personnalisés.
-* **Lovable.dev** : Utilisé pour le démarrage ultra-rapide (MVP) et la génération de la base UI initiale.
+* **Mistral AI (mistral-small-latest)** : Moteur de l'agent conversationnel **Chronos 2.0**, avec System Prompt personnalisé et mémoire conversationnelle.
+
+### 🏗 Génération & Prototypage
+* **[Lovable.dev](https://lovable.dev)** : Bootstrap initial du projet (React/Vite/Tailwind) via prompts conversationnels.
 
 ### 🎨 Assets & Visuels
 * **Nano Banana** : Génération des visuels cinématographiques exclusifs pour les destinations.
@@ -48,7 +72,7 @@ Le projet a été entièrement développé à l'aide d'**outils gratuits** et de
 * **Runtime & Package Manager** : **Bun** pour une rapidité d'exécution et d'installation optimale.
 * **Frontend** : React + TypeScript (Typage strict validé via `tsc --noEmit`).
 * **Styling** : Tailwind CSS avec Design System centralisé dans `src/constants/styles.ts`.
-* **Logic Layer** : Custom Hooks (`useQuiz`, `useChatbot`, `useAudio`, `useCursor`) isolant totalement la logique du JSX.
+* **Logic Layer** : Custom Hooks (`useQuiz`, `useChatbot`, `useAudio`, `useCursor`, `useParallax`, `useIntersection`) isolant totalement la logique du JSX.
 * **Animations** : Framer Motion (GPU Accelerated) & Mouse Parallax.
 
 ---
@@ -56,10 +80,12 @@ Le projet a été entièrement développé à l'aide d'**outils gratuits** et de
 ## ✨ Fonctionnalités Avancées
 
 1. **Expérience Immersive "Triple A"** :
-   * **Custom Cursor** : Viseur temporel doré (60 FPS) avec logique de "Spring" physique pour éviter tout lag.
+   * **Custom Cursor** : Viseur temporel doré (60 FPS) avec `useMotionValue` et `useSpring` de Framer Motion pour une fluidité GPU-accélérée.
    * **Audio Context** : Nappe sonore adaptative démarrant dès l'entrée dans l'expérience.
+   * **Mouse Parallax** : Effet de profondeur sur les images de destination via `useParallax`.
+2. **Agent Chronos 2.0** : IA conversationnelle connectée à **Mistral AI** (`mistral-small-latest`) avec mémoire de conversation et fallback local si la clé API est absente.
 2. **Architecture Modulaire** : Code 100% déclaratif. Le fichier `Index.tsx` est réduit à une simple structure de composition.
-3. **Localisation Réelle** : L'agence est ancrée à **Lyon Perrache** (12 bis Cour de Verdun Gensoul) avec un héritage remontant à **1986**.
+3. **Localisation Réelle** : L'agence est ancrée à **Lyon Perrache** (12 bis Cour de Verdun Gensoul, 69002) avec un héritage remontant à **1986**.
 4. **Performance Optimisée** : Suppression du code mort (nettoyage des composants Shadcn inutilisés) et lazy-loading systématique.
 
 ---
