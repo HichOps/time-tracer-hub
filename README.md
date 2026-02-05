@@ -77,6 +77,89 @@ Le projet a été entièrement développé à l'aide d'**outils gratuits** et de
 
 ---
 
+## 🏗️ Architecture Technique (Industrial Grade)
+
+L'architecture du projet a été conçue pour répondre aux standards de production **Heisenberg Prod.** (Lyon Perrache, depuis 1986). Elle respecte les principes **SOLID**, **DRY** et **SoC** (Separation of Concerns).
+
+```
+time-tracer-hub/
+├── 📦 bun.lockb                    # Lockfile Bun (runtime haute performance)
+├── ⚙️ vite.config.ts               # Configuration Vite + Code Splitting
+├── 🎨 tailwind.config.ts           # Design System centralisé
+├── 🔐 .env.example                 # Template des variables d'environnement
+│
+├── public/
+│   └── robots.txt                  # SEO & Indexation
+│
+└── src/
+    ├── main.tsx                    # Point d'entrée React
+    ├── App.tsx                     # Router & Providers
+    │
+    ├── 📄 pages/
+    │   ├── Index.tsx               # Page principale (composition pure)
+    │   └── NotFound.tsx            # Gestion 404
+    │
+    ├── 🧩 components/
+    │   ├── Header.tsx              # Navigation principale
+    │   ├── HeroSection.tsx         # Section héroïque immersive
+    │   ├── DestinationsSection.tsx # Grille des voyages temporels
+    │   ├── DestinationCard.tsx     # Carte destination (parallax)
+    │   ├── ExperienceSection.tsx   # Section expérience
+    │   ├── ChronoQuiz.tsx          # Quiz de recommandation
+    │   ├── ChatWidget.tsx          # Interface Chronos (IA)
+    │   ├── BookingModal.tsx        # Modale de réservation
+    │   ├── Footer.tsx              # Pied de page (Lyon Perrache 1986)
+    │   └── ui/                     # Composants atomiques
+    │       ├── CustomCursor.tsx    # Curseur temporel GPU-accéléré
+    │       ├── MuteButton.tsx      # Contrôle audio
+    │       └── [shadcn/ui]         # 7 composants essentiels
+    │
+    ├── 🪝 hooks/
+    │   ├── useChatbot.ts           # Logique IA Chronos + Mistral API
+    │   ├── useCursor.ts            # Animation curseur (useMotionValue)
+    │   ├── useAudio.ts             # Gestion audio spatiale
+    │   ├── useQuiz.ts              # Machine à états du quiz
+    │   ├── useBooking.ts           # Workflow de réservation
+    │   ├── useParallax.ts          # Effet parallaxe souris
+    │   ├── useIntersection.ts      # Détection viewport
+    │   └── use-mobile.tsx          # Détection responsive
+    │
+    ├── 🔌 services/
+    │   └── mistralService.ts       # API Mistral (Few-Shot Prompting)
+    │
+    ├── 📚 constants/
+    │   ├── destinations.ts         # Données destinations (Paris 1889, etc.)
+    │   ├── quiz.ts                 # Questions & scoring
+    │   ├── chat.ts                 # Réponses fallback Chronos
+    │   ├── styles.ts               # Design tokens (couleurs, espacements)
+    │   └── index.ts                # Barrel export
+    │
+    ├── 🎭 contexts/
+    │   └── AudioContext.tsx        # Provider audio global
+    │
+    ├── 🏷️ types/
+    │   └── index.ts                # Interfaces TypeScript centralisées
+    │
+    └── 🧪 test/
+        ├── setup.ts                # Configuration Vitest
+        └── example.test.ts         # Tests unitaires
+```
+
+### 💡 Justifications Techniques
+
+| Couche | Avantage |
+|--------|----------|
+| **🪝 Hooks Personnalisés** | Isolation totale de la logique métier (SoC). Le JSX reste 100% déclaratif. |
+| **🔌 Services** | Centralisation des appels API Mistral. Secrets sécurisés via `.env`. |
+| **📚 Constants** | Principe DRY : contenu érudit et Design System en un seul point de vérité. |
+| **🏷️ Types** | Typage strict validé par `tsc --noEmit`. Zéro `any` en production. |
+| **⚡ Bun Engine** | Runtime 3x plus rapide que Node.js pour le build et l'installation. |
+| **🎨 Tailwind + tokens** | Design System cohérent via `styles.ts` (or Heisenberg, dégradés temporels). |
+
+> 🏭 **Industrial Grade** : Cette architecture permet une maintenance aisée, des tests unitaires ciblés et une scalabilité horizontale pour de futures destinations.
+
+---
+
 ## ✨ Fonctionnalités Avancées
 
 1. **Expérience Immersive "Triple A"** :
