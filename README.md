@@ -84,7 +84,14 @@ Le projet a été entièrement développé à l'aide d'**outils gratuits** et de
    * **Audio Context** : Nappe sonore adaptative démarrant dès l'entrée dans l'expérience.
    * **Mouse Parallax** : Effet de profondeur sur les images de destination via `useParallax`.
 2. **Agent Chronos 2.0** : IA conversationnelle connectée à **Mistral AI** (`mistral-small-latest`) avec mémoire de conversation et fallback local si la clé API est absente.
-2. **Architecture Modulaire** : Code 100% déclaratif. Le fichier `Index.tsx` est réduit à une simple structure de composition.
+
+### 🧠 Focus : L'Intelligence de Chronos
+L'agent utilise un système de **Few-Shot Prompting** pour garantir une immersion totale :
+- **Modèle** : Mistral-small-latest (via API sécurisée).
+- **Context Window** : Mémoire glissante de 16 messages pour une continuité narrative.
+- **Guardrails** : Filtrage des hors-sujets et maintien strict du rôle "Heisenberg Prod.".
+
+3. **Architecture Modulaire** : Code 100% déclaratif. Le fichier `Index.tsx` est réduit à une simple structure de composition.
 3. **Localisation Réelle** : L'agence est ancrée à **Lyon Perrache** (12 bis Cour de Verdun Gensoul, 69002) avec un héritage remontant à **1986**.
 4. **Performance Optimisée** : Suppression du code mort (nettoyage des composants Shadcn inutilisés) et lazy-loading systématique.
 
