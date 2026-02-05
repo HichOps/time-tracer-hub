@@ -2,7 +2,7 @@
 
 Webapp immersive pour une agence de voyage temporel de luxe, réalisée dans le cadre du projet supervisé "IA Créatives" (2026). Ce projet illustre une transition réussie du **"Vibe Coding"** vers une **architecture logicielle industrielle**.
 
-🔗 **Démo en ligne** : [https://time-tracer-hub.lovable.app](https://time-tracer-hub.lovable.app)
+🔗 **Démo en ligne** : [https://time-tracer-hub.vercel.app](https://time-tracer-hub.vercel.app)
 💻 **Dépôt GitHub** : [https://github.com/HichOps/time-tracer-hub](https://github.com/HichOps/time-tracer-hub)
 🏢 **Propulsé par** : Heisenberg Prod.
 
