@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
+import { useIntersection } from '@/hooks/useIntersection';
+import { useParallax } from '@/hooks/useParallax';
 
 interface DestinationCardProps {
   id: string;
   image: string;
+  imageAlt?: string;
   title: string;
   description: string;
   ambiance: string;
@@ -14,31 +16,19 @@ interface DestinationCardProps {
 const DestinationCard = ({
   id,
   image,
+  imageAlt,
   title,
   description,
   ambiance,
   badges = [],
   delay = 0,
 }: DestinationCardProps) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => setIsVisible(true), delay);
-        }
-      },
-      { threshold: 0.15 }
-    );
-
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [delay]);
+  const { ref: cardRef, isVisible } = useIntersection<HTMLDivElement>({ delay });
+  const { transform, handleMouseMove, handleMouseLeave } = useParallax(undefined, {
+    intensity: 15,
+    invert: true, // L'image bouge dans le sens opposé à la souris
+    scale: 1.05,
+  });
 
   return (
     <div
@@ -47,13 +37,17 @@ const DestinationCard = ({
       className={`card-destination group cursor-pointer transition-all duration-700 ease-out ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'
       }`}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
     >
       {/* Image Container */}
       <div className="relative h-[500px] md:h-[600px] overflow-hidden rounded-2xl">
         <img
           src={image}
-          alt={title}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          alt={imageAlt || `Destination temporelle : ${title}`}
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 ease-out"
+          style={{ transform }}
         />
         
         {/* Gradient Overlay */}

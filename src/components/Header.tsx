@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Clock } from 'lucide-react';
+import { SECTION_IDS, scrollToSection } from '@/constants';
+import MuteButton from '@/components/ui/MuteButton';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -11,13 +13,6 @@ const Header = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   return (
     <header
@@ -43,7 +38,7 @@ const Header = () => {
           <ul className="hidden md:flex items-center gap-8">
             <li>
               <button
-                onClick={() => scrollToSection('destinations')}
+                onClick={() => scrollToSection(SECTION_IDS.DESTINATIONS)}
                 className="nav-link font-medium"
               >
                 Destinations
@@ -51,11 +46,14 @@ const Header = () => {
             </li>
             <li>
               <button
-                onClick={() => scrollToSection('experience')}
+                onClick={() => scrollToSection(SECTION_IDS.EXPERIENCE)}
                 className="nav-link font-medium"
               >
                 L'Expérience
               </button>
+            </li>
+            <li>
+              <MuteButton />
             </li>
             <li>
               <button

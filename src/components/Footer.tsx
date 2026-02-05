@@ -16,7 +16,7 @@ const Footer = () => {
               </span>
             </div>
             <p className="text-muted-foreground leading-relaxed max-w-sm">
-              Pionniers du voyage temporel depuis 2035. Nous vous offrons des
+              Pionniers du voyage temporel depuis 1986. Nous vous offrons des
               expériences uniques à travers les âges, dans le luxe et la
               sécurité absolue.
             </p>
@@ -69,15 +69,15 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-center gap-3 text-muted-foreground">
                 <MapPin className="w-4 h-4 text-gold" />
-                <span>Paris, France — 2050</span>
+                <span>12 bis Cour de Verdun Gensoul, 69002 Lyon (Perrache)</span>
               </li>
               <li className="flex items-center gap-3 text-muted-foreground">
                 <Mail className="w-4 h-4 text-gold" />
-                <span>voyage@timetravel.agency</span>
+                <span>contact@heisenberg-prod.com</span>
               </li>
               <li className="flex items-center gap-3 text-muted-foreground">
                 <Phone className="w-4 h-4 text-gold" />
-                <span>+33 1 XX XX XX XX</span>
+                <span>+33 (0)4 78 41 41 41</span>
               </li>
             </ul>
           </div>
@@ -86,7 +86,7 @@ const Footer = () => {
         {/* Bottom */}
         <div className="mt-16 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-muted-foreground text-sm">
-            © 2050 TimeTravel Agency. Tous droits réservés à travers le temps.
+            © 2026 TimeTravel Agency. Propulsé par Heisenberg Prod. Tous droits réservés à travers le temps.
           </p>
           <div className="flex items-center gap-6">
             <a

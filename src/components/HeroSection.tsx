@@ -1,15 +1,22 @@
 import { useState } from 'react';
 import { ChevronDown, Compass } from 'lucide-react';
+import { SECTION_IDS, scrollToSection } from '@/constants';
+import { useAudioContext } from '@/contexts/AudioContext';
 import ChronoQuiz from './ChronoQuiz';
 
 const HeroSection = () => {
   const [isQuizOpen, setIsQuizOpen] = useState(false);
+  const { startAmbient, playSound } = useAudioContext();
 
-  const scrollToDestinations = () => {
-    const element = document.getElementById('destinations');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+  const handleStartJourney = () => {
+    startAmbient(); // Démarre la nappe sonore
+    playSound('whoosh');
+    scrollToSection(SECTION_IDS.DESTINATIONS);
+  };
+
+  const handleOpenQuiz = () => {
+    playSound('click');
+    setIsQuizOpen(true);
   };
 
   return (
@@ -47,13 +54,13 @@ const HeroSection = () => {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up animation-delay-600">
               <button
-                onClick={scrollToDestinations}
+                onClick={handleStartJourney}
                 className="btn-gold text-lg px-10 py-5 animate-pulse-glow"
               >
                 <span className="relative z-10">Commencer le voyage</span>
               </button>
               <button
-                onClick={() => setIsQuizOpen(true)}
+                onClick={handleOpenQuiz}
                 className="px-8 py-4 rounded-lg border-2 border-gold text-gold hover:bg-gold hover:text-background transition-all duration-300 font-semibold flex items-center gap-2"
               >
                 <Compass className="w-5 h-5" />
@@ -65,7 +72,7 @@ const HeroSection = () => {
           {/* Scroll indicator */}
           <div className="absolute bottom-12 left-1/2 -translate-x-1/2 animate-float">
             <button
-              onClick={scrollToDestinations}
+              onClick={() => scrollToSection(SECTION_IDS.DESTINATIONS)}
               className="text-muted-foreground hover:text-gold transition-colors"
             >
               <ChevronDown className="w-8 h-8" />

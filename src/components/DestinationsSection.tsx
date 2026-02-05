@@ -1,38 +1,9 @@
 import DestinationCard from './DestinationCard';
-
-const destinations = [
-  {
-    id: 'paris-1889',
-    image: 'https://i.imgur.com/XSMPDtu.jpeg',
-    title: 'Paris 1889',
-    description:
-      "L'Exposition Universelle comme vous ne l'avez jamais vue. Admirez la Tour Eiffel dans sa couleur rouge d'origine sous les projecteurs de la nuit parisienne.",
-    ambiance: 'Nocturne, électrique, foule élégante',
-    badges: ['Romance', 'Gastronomie', 'Guide Inclus'],
-  },
-  {
-    id: 'cretace',
-    image: 'https://i.imgur.com/icPa5lp.jpeg',
-    title: 'Crétacé (-66M)',
-    description:
-      'Observez les géants de la préhistoire dans leur habitat naturel. Un safari au crépuscule, entre volcans et forêts primitives.',
-    ambiance: 'Coucher de soleil intense, brume, nature sauvage',
-    badges: ['Aventure', 'Nature Sauvage', 'Sécurité Max'],
-  },
-  {
-    id: 'florence-1504',
-    image: 'https://i.imgur.com/qyQcyGq.jpeg',
-    title: 'Florence 1504',
-    description:
-      'Rencontrez Michel-Ange au cœur de la Renaissance. Flânez sur la Piazza della Signoria parmi les marchands et les artistes.',
-    ambiance: 'Ensoleillée, architecturale, historique',
-    badges: ['Art & Histoire', 'Architecture', 'Costume d\'époque'],
-  },
-];
+import { DESTINATIONS, SECTION_IDS } from '@/constants';
 
 const DestinationsSection = () => {
   return (
-    <section id="destinations" className="py-24 md:py-32 bg-background">
+    <section id={SECTION_IDS.DESTINATIONS} className="py-24 md:py-32 bg-background">
       <div className="container mx-auto px-6">
         {/* Section Header */}
         <div className="text-center mb-16">
@@ -51,9 +22,9 @@ const DestinationsSection = () => {
 
         {/* Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {destinations.map((destination, index) => (
+          {DESTINATIONS.map((destination, index) => (
             <DestinationCard
-              key={destination.title}
+              key={destination.id}
               {...destination}
               delay={index * 200}
             />

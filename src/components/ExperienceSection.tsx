@@ -1,57 +1,22 @@
-import { useEffect, useRef, useState } from 'react';
-import { Shield, Compass, Sparkles, Clock } from 'lucide-react';
+import { Shield, Compass, Sparkles, Clock, type LucideIcon } from 'lucide-react';
+import { EXPERIENCE_FEATURES, SECTION_IDS } from '@/constants';
+import { useIntersection } from '@/hooks/useIntersection';
+import type { Feature } from '@/types';
 
-const features = [
-  {
-    icon: Shield,
-    title: 'Sécurité Absolue',
-    description:
-      'Nos capsules temporelles utilisent une technologie brevetée garantissant un retour dans votre époque à la seconde près.',
-  },
-  {
-    icon: Compass,
-    title: 'Guides Experts',
-    description:
-      'Accompagnés par des historiens et scientifiques, vivez chaque époque avec un regard privilégié.',
-  },
-  {
-    icon: Sparkles,
-    title: 'Immersion Totale',
-    description:
-      'Costumes d\'époque, monnaie locale, dialectes : chaque détail est pensé pour une expérience authentique.',
-  },
-  {
-    icon: Clock,
-    title: 'Durée Flexible',
-    description:
-      'De quelques heures à plusieurs jours, adaptez la durée de votre voyage selon vos envies.',
-  },
-];
+// Mapping des noms d'icônes vers les composants Lucide
+const iconMap: Record<Feature['iconName'], LucideIcon> = {
+  Shield,
+  Compass,
+  Sparkles,
+  Clock,
+};
 
 const ExperienceSection = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
+  const { ref: sectionRef, isVisible } = useIntersection<HTMLDivElement>({ threshold: 0.2 });
 
   return (
     <section
-      id="experience"
+      id={SECTION_IDS.EXPERIENCE}
       ref={sectionRef}
       className="py-24 md:py-32 bg-secondary/30"
     >
@@ -73,27 +38,30 @@ const ExperienceSection = () => {
 
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {features.map((feature, index) => (
-            <div
-              key={feature.title}
-              className={`p-8 rounded-2xl bg-card border border-border hover:border-gold/30 transition-all duration-500 group ${
-                isVisible
-                  ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-8'
-              }`}
-              style={{ transitionDelay: `${index * 100}ms` }}
-            >
-              <div className="w-14 h-14 rounded-xl bg-gold/10 flex items-center justify-center mb-6 group-hover:bg-gold/20 transition-colors duration-300">
-                <feature.icon className="w-7 h-7 text-gold" />
+          {EXPERIENCE_FEATURES.map((feature, index) => {
+            const IconComponent = iconMap[feature.iconName];
+            return (
+              <div
+                key={feature.title}
+                className={`p-8 rounded-2xl bg-card border border-border hover:border-gold/30 transition-all duration-500 group ${
+                  isVisible
+                    ? 'opacity-100 translate-y-0'
+                    : 'opacity-0 translate-y-8'
+                }`}
+                style={{ transitionDelay: `${index * 100}ms` }}
+              >
+                <div className="w-14 h-14 rounded-xl bg-gold/10 flex items-center justify-center mb-6 group-hover:bg-gold/20 transition-colors duration-300">
+                  <IconComponent className="w-7 h-7 text-gold" />
+                </div>
+                <h3 className="font-serif text-2xl font-semibold mb-4 group-hover:text-gold transition-colors duration-300">
+                  {feature.title}
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  {feature.description}
+                </p>
               </div>
-              <h3 className="font-serif text-2xl font-semibold mb-4 group-hover:text-gold transition-colors duration-300">
-                {feature.title}
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                {feature.description}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

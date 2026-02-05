@@ -1,128 +1,42 @@
-import { useState } from 'react';
-import { X, Sparkles, ArrowRight, RotateCcw } from 'lucide-react';
+import { Sparkles, ArrowRight, RotateCcw } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { useQuiz } from '@/hooks/useQuiz';
+import { useAudioContext } from '@/contexts/AudioContext';
+import { QUIZ_QUESTIONS } from '@/constants';
 
 interface ChronoQuizProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-type Answer = 'A' | 'B' | 'C' | null;
-
-interface Destination {
-  id: string;
-  name: string;
-  period: string;
-  image: string;
-  description: string;
-}
-
-const destinations: Record<string, Destination> = {
-  paris: {
-    id: 'paris-1889',
-    name: 'Paris 1889',
-    period: "L'Exposition Universelle",
-    image: 'https://i.imgur.com/XSMPDtu.jpeg',
-    description: "Vivez l'effervescence de la Belle Époque et admirez la Tour Eiffel dans sa splendeur originelle.",
-  },
-  cretace: {
-    id: 'cretace',
-    name: 'Le Crétacé',
-    period: '-66 millions d\'années',
-    image: 'https://i.imgur.com/icPa5lp.jpeg',
-    description: 'Partez en safari préhistorique et observez les géants qui dominaient la Terre.',
-  },
-  florence: {
-    id: 'florence-1504',
-    name: 'Florence 1504',
-    period: 'La Renaissance',
-    image: 'https://i.imgur.com/qyQcyGq.jpeg',
-    description: 'Plongez dans le cœur artistique de la Renaissance aux côtés des plus grands maîtres.',
-  },
-};
-
-const questions = [
-  {
-    id: 1,
-    question: 'Quelle est votre envie du moment ?',
-    options: [
-      { value: 'A' as const, label: 'Découverte & Innovation', icon: '💡' },
-      { value: 'B' as const, label: 'Nature Sauvage & Frissons', icon: '🦕' },
-      { value: 'C' as const, label: 'Art & Culture', icon: '🎨' },
-    ],
-  },
-  {
-    id: 2,
-    question: 'Votre ambiance idéale ?',
-    options: [
-      { value: 'A' as const, label: 'Foule festive et électrique', icon: '✨' },
-      { value: 'B' as const, label: 'Solitude et grands espaces', icon: '🌅' },
-      { value: 'C' as const, label: 'Raffinement et architecture', icon: '🏛️' },
-    ],
-  },
-];
-
 const ChronoQuiz = ({ isOpen, onClose }: ChronoQuizProps) => {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [answers, setAnswers] = useState<Answer[]>([null, null]);
-  const [result, setResult] = useState<Destination | null>(null);
+  const {
+    currentStep,
+    answers,
+    result,
+    totalQuestions,
+    currentQuestion,
+    handleAnswer,
+    resetQuiz,
+    scrollToResult,
+  } = useQuiz();
+  const { playSound } = useAudioContext();
 
-  const handleAnswer = (answer: Answer) => {
-    const newAnswers = [...answers];
-    newAnswers[currentStep] = answer;
-    setAnswers(newAnswers);
-
-    if (currentStep < questions.length - 1) {
-      setTimeout(() => setCurrentStep(currentStep + 1), 300);
-    } else {
-      // Calculate result
-      setTimeout(() => calculateResult(newAnswers), 300);
-    }
-  };
-
-  const calculateResult = (finalAnswers: Answer[]) => {
-    const counts = { A: 0, B: 0, C: 0 };
-    finalAnswers.forEach((answer) => {
-      if (answer) counts[answer]++;
-    });
-
-    let winner: 'A' | 'B' | 'C' = 'A';
-    if (counts.B > counts.A && counts.B >= counts.C) winner = 'B';
-    else if (counts.C > counts.A && counts.C > counts.B) winner = 'C';
-
-    const destinationMap = { A: 'paris', B: 'cretace', C: 'florence' };
-    setResult(destinations[destinationMap[winner]]);
+  const handleAnswerWithSound = (value: 'A' | 'B' | 'C') => {
+    playSound('click');
+    handleAnswer(value);
   };
 
   const handleReserve = () => {
-    if (!result) return;
-    
+    playSound('success');
     onClose();
     resetQuiz();
-    
-    // Scroll to the destination card
-    setTimeout(() => {
-      const element = document.getElementById(result.id);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        // Add a highlight effect
-        element.classList.add('ring-2', 'ring-gold', 'ring-offset-2', 'ring-offset-background');
-        setTimeout(() => {
-          element.classList.remove('ring-2', 'ring-gold', 'ring-offset-2', 'ring-offset-background');
-        }, 2000);
-      }
-    }, 300);
-  };
-
-  const resetQuiz = () => {
-    setCurrentStep(0);
-    setAnswers([null, null]);
-    setResult(null);
+    setTimeout(scrollToResult, 300);
   };
 
   const handleClose = () => {
@@ -145,7 +59,7 @@ const ChronoQuiz = ({ isOpen, onClose }: ChronoQuizProps) => {
                   Définissons votre profil temporel
                 </DialogTitle>
                 <p className="text-sm text-muted-foreground mt-1">
-                  {result ? 'Votre destination idéale' : `Question ${currentStep + 1} sur ${questions.length}`}
+                  {result ? 'Votre destination idéale' : `Question ${currentStep + 1} sur ${totalQuestions}`}
                 </p>
               </div>
             </div>
@@ -158,13 +72,13 @@ const ChronoQuiz = ({ isOpen, onClose }: ChronoQuizProps) => {
             // Questions
             <div className="space-y-6">
               <h3 className="text-lg font-medium text-foreground text-center">
-                {questions[currentStep].question}
+                {currentQuestion.question}
               </h3>
               <div className="space-y-3">
-                {questions[currentStep].options.map((option) => (
+                {currentQuestion.options.map((option) => (
                   <button
                     key={option.value}
-                    onClick={() => handleAnswer(option.value)}
+                    onClick={() => handleAnswerWithSound(option.value)}
                     className={`w-full p-4 rounded-xl border transition-all duration-300 text-left flex items-center gap-4 group hover:border-gold hover:bg-gold/5 ${
                       answers[currentStep] === option.value
                         ? 'border-gold bg-gold/10'
@@ -181,7 +95,7 @@ const ChronoQuiz = ({ isOpen, onClose }: ChronoQuizProps) => {
 
               {/* Progress indicator */}
               <div className="flex justify-center gap-2 pt-4">
-                {questions.map((_, index) => (
+                {QUIZ_QUESTIONS.map((_, index) => (
                   <div
                     key={index}
                     className={`w-2 h-2 rounded-full transition-all ${
@@ -197,18 +111,19 @@ const ChronoQuiz = ({ isOpen, onClose }: ChronoQuizProps) => {
               <div className="relative rounded-xl overflow-hidden aspect-video">
                 <img
                   src={result.image}
-                  alt={result.name}
+                  alt={result.title}
+                  loading="lazy"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4">
                   <p className="text-gold text-sm font-medium">{result.period}</p>
-                  <h3 className="font-serif text-2xl text-foreground">{result.name}</h3>
+                  <h3 className="font-serif text-2xl text-foreground">{result.title}</h3>
                 </div>
               </div>
 
               <p className="text-muted-foreground text-center leading-relaxed">
-                {result.description}
+                {result.shortDescription}
               </p>
 
               <div className="flex gap-3">
