@@ -1,6 +1,7 @@
 import { MessageCircle, X, Send } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useChatbot } from '@/hooks/useChatbot';
+import ChatTrigger from '@/components/ChatTrigger';
 
 const TypingIndicator = () => (
   <div className="flex gap-3">
@@ -40,6 +41,7 @@ const ChatWidget = () => {
     handleKeyPress,
     scrollRef,
     inputRef,
+    focusInput,
   } = useChatbot();
 
   return (
@@ -82,7 +84,7 @@ const ChatWidget = () => {
         </div>
 
         {/* Messages */}
-        <ScrollArea className="h-80">
+        <ScrollArea className="h-80" onClick={focusInput}>
           <div className="p-4 space-y-4">
             {messages.map((message) => (
               <div
@@ -138,18 +140,8 @@ const ChatWidget = () => {
         </div>
       </div>
 
-      {/* Floating Button */}
-      <button
-        onClick={toggleChat}
-        className={`chat-bubble ${isOpen ? 'rotate-0' : ''}`}
-        aria-label={isOpen ? 'Fermer le chat' : 'Ouvrir le chat'}
-      >
-        {isOpen ? (
-          <X className="w-6 h-6 text-background" />
-        ) : (
-          <MessageCircle className="w-6 h-6 text-background" />
-        )}
-      </button>
+      {/* Floating Button with Proactive Tooltip */}
+      <ChatTrigger isOpen={isOpen} onToggle={toggleChat} />
     </>
   );
 };

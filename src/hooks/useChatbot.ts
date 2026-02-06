@@ -28,6 +28,8 @@ interface UseChatbotReturn {
   scrollRef: React.RefObject<HTMLDivElement>;
   /** Référence de l'input */
   inputRef: React.RefObject<HTMLInputElement>;
+  /** Force le focus sur l'input */
+  focusInput: () => void;
 }
 
 /**
@@ -65,6 +67,24 @@ export const useChatbot = (): UseChatbotReturn => {
       inputRef.current.focus();
     }
   }, [isOpen]);
+
+  // Refocus input dès que l'IA a fini de répondre (isTyping repasse à false)
+  useEffect(() => {
+    if (!isTyping && isOpen && inputRef.current) {
+      // Petit délai pour s'assurer que le champ n'est plus disabled
+      const timeoutId = setTimeout(() => {
+        inputRef.current?.focus();
+      }, 50);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [isTyping, isOpen]);
+
+  // Fonction pour forcer le focus sur l'input
+  const focusInput = useCallback(() => {
+    if (inputRef.current && !isTyping) {
+      inputRef.current.focus();
+    }
+  }, [isTyping]);
 
   // Réinitialise l'historique Mistral à la fermeture du chat
   useEffect(() => {
@@ -142,5 +162,6 @@ export const useChatbot = (): UseChatbotReturn => {
     handleKeyPress,
     scrollRef,
     inputRef,
+    focusInput,
   };
 };
