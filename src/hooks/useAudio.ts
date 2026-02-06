@@ -12,22 +12,31 @@ interface UseAudioReturn extends AudioState {
   /** Démarre le son ambiant (appeler après une interaction utilisateur) */
   startAmbient: () => void;
   /** Joue un effet sonore ponctuel */
-  playSound: (sound: 'click' | 'whoosh' | 'success') => void;
+  playSound: (sound: 'click' | 'whoosh' | 'success' | 'notify') => void;
 }
 
 // URLs des sons (hébergés sur des CDN publics pour le MVP)
 const SOUND_URLS = {
+  // Nappe ambiante drone subtile (loop: false, on gère manuellement)
   ambient: 'https://assets.mixkit.co/active_storage/sfx/212/212-preview.mp3',
   click: 'https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3',
   whoosh: 'https://assets.mixkit.co/active_storage/sfx/2554/2554-preview.mp3',
   success: 'https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3',
+  // Son cristallin court pour notification chatbot
+  notify: 'https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3',
 } as const;
+
+// Durée du fade-in en ms
+const FADE_IN_DURATION = 2000;
+const FADE_STEP_INTERVAL = 50;
+const TARGET_AMBIENT_VOLUME = 0.15;
 
 /**
  * Hook pour gérer l'audio immersif
- * - Nappe ambiante en boucle
+ * - Nappe ambiante avec fade-in de 2 secondes (déclenchée par interaction)
  * - Effets sonores ponctuels
- * - Chargement asynchrone pour ne pas bloquer le rendu
+ * - Son de notification pour le chatbot
+ * - Respecte les politiques d'Autoplay des navigateurs
  */
 export const useAudio = (): UseAudioReturn => {
   const [state, setState] = useState<AudioState>({
@@ -38,25 +47,26 @@ export const useAudio = (): UseAudioReturn => {
 
   const ambientRef = useRef<HTMLAudioElement | null>(null);
   const soundsRef = useRef<Record<string, HTMLAudioElement>>({});
+  const fadeIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Chargement asynchrone des sons
+  // Chargement asynchrone des sons - PAS d'autoplay
   useEffect(() => {
-    // Créer l'élément audio ambient
+    // Créer l'élément audio ambient (ne joue PAS automatiquement)
     const ambient = new Audio();
     ambient.src = SOUND_URLS.ambient;
-    ambient.loop = true;
-    ambient.volume = 0.15; // Volume discret
+    ambient.loop = true; // Loop géré manuellement avec fade
+    ambient.volume = 0; // Commence à 0 pour le fade-in
     ambient.preload = 'none'; // Ne charge pas tant que non demandé
     ambientRef.current = ambient;
 
     // Précharger les effets sonores en background
     const preloadSounds = async () => {
-      const soundTypes = ['click', 'whoosh', 'success'] as const;
+      const soundTypes = ['click', 'whoosh', 'success', 'notify'] as const;
       
       for (const type of soundTypes) {
         const audio = new Audio();
         audio.src = SOUND_URLS[type];
-        audio.volume = 0.3;
+        audio.volume = type === 'notify' ? 0.25 : 0.3; // Notify plus discret
         audio.preload = 'auto';
         soundsRef.current[type] = audio;
       }
@@ -69,6 +79,9 @@ export const useAudio = (): UseAudioReturn => {
 
     return () => {
       clearTimeout(timeoutId);
+      if (fadeIntervalRef.current) {
+        clearInterval(fadeIntervalRef.current);
+      }
       if (ambientRef.current) {
         ambientRef.current.pause();
         ambientRef.current = null;
@@ -76,43 +89,99 @@ export const useAudio = (): UseAudioReturn => {
     };
   }, []);
 
+  /**
+   * Démarre la nappe ambiante avec un fade-in progressif de 2 secondes
+   * Ne se déclenche qu'après une interaction utilisateur (respect Autoplay)
+   */
   const startAmbient = useCallback(() => {
     if (ambientRef.current && !state.isPlaying && !state.isMuted) {
-      // Fade in progressif
-      ambientRef.current.volume = 0;
-      ambientRef.current.play().then(() => {
-        let vol = 0;
-        const fadeIn = setInterval(() => {
-          vol += 0.01;
+      const audio = ambientRef.current;
+      audio.volume = 0;
+      
+      audio.play().then(() => {
+        // Fade-in progressif sur 2 secondes
+        const steps = FADE_IN_DURATION / FADE_STEP_INTERVAL;
+        const volumeIncrement = TARGET_AMBIENT_VOLUME / steps;
+        let currentVolume = 0;
+        
+        fadeIntervalRef.current = setInterval(() => {
+          currentVolume += volumeIncrement;
           if (ambientRef.current) {
-            ambientRef.current.volume = Math.min(vol, 0.15);
+            ambientRef.current.volume = Math.min(currentVolume, TARGET_AMBIENT_VOLUME);
           }
-          if (vol >= 0.15) clearInterval(fadeIn);
-        }, 50);
+          if (currentVolume >= TARGET_AMBIENT_VOLUME) {
+            if (fadeIntervalRef.current) {
+              clearInterval(fadeIntervalRef.current);
+              fadeIntervalRef.current = null;
+            }
+          }
+        }, FADE_STEP_INTERVAL);
       }).catch(() => {
         // L'utilisateur n'a pas encore interagi - silencieux
+        console.debug('[Audio] Autoplay bloqué - interaction requise');
       });
+      
       setState(prev => ({ ...prev, isPlaying: true }));
     }
   }, [state.isPlaying, state.isMuted]);
 
+  /**
+   * Coupe ou réactive instantanément toutes les sources audio
+   */
   const toggleMute = useCallback(() => {
     setState(prev => {
       const newMuted = !prev.isMuted;
       
+      // Coupe immédiatement l'ambient
       if (ambientRef.current) {
         if (newMuted) {
+          // Stop le fade-in en cours si présent
+          if (fadeIntervalRef.current) {
+            clearInterval(fadeIntervalRef.current);
+            fadeIntervalRef.current = null;
+          }
           ambientRef.current.pause();
+          ambientRef.current.volume = 0;
         } else if (prev.isPlaying) {
-          ambientRef.current.play().catch(() => {});
+          // Reprend avec fade-in
+          ambientRef.current.volume = 0;
+          ambientRef.current.play().then(() => {
+            const steps = FADE_IN_DURATION / FADE_STEP_INTERVAL;
+            const volumeIncrement = TARGET_AMBIENT_VOLUME / steps;
+            let currentVolume = 0;
+            
+            fadeIntervalRef.current = setInterval(() => {
+              currentVolume += volumeIncrement;
+              if (ambientRef.current) {
+                ambientRef.current.volume = Math.min(currentVolume, TARGET_AMBIENT_VOLUME);
+              }
+              if (currentVolume >= TARGET_AMBIENT_VOLUME) {
+                if (fadeIntervalRef.current) {
+                  clearInterval(fadeIntervalRef.current);
+                  fadeIntervalRef.current = null;
+                }
+              }
+            }, FADE_STEP_INTERVAL);
+          }).catch(() => {});
         }
+      }
+
+      // Stoppe tous les effets sonores en cours
+      if (newMuted) {
+        Object.values(soundsRef.current).forEach(audio => {
+          audio.pause();
+          audio.currentTime = 0;
+        });
       }
       
       return { ...prev, isMuted: newMuted };
     });
   }, []);
 
-  const playSound = useCallback((sound: 'click' | 'whoosh' | 'success') => {
+  /**
+   * Joue un effet sonore ponctuel (one-shot)
+   */
+  const playSound = useCallback((sound: 'click' | 'whoosh' | 'success' | 'notify') => {
     if (state.isMuted) return;
     
     const audio = soundsRef.current[sound];

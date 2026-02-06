@@ -1,6 +1,8 @@
+import { useEffect, useRef } from 'react';
 import { MessageCircle, X, Send } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useChatbot } from '@/hooks/useChatbot';
+import { useAudioContext } from '@/contexts/AudioContext';
 import ChatTrigger from '@/components/ChatTrigger';
 
 const TypingIndicator = () => (
@@ -43,6 +45,18 @@ const ChatWidget = () => {
     inputRef,
     focusInput,
   } = useChatbot();
+
+  const { playSound } = useAudioContext();
+  const wasTypingRef = useRef(false);
+
+  // Joue un son de notification quand l'IA finit de répondre
+  useEffect(() => {
+    // Détecte la transition isTyping: true → false (IA a fini)
+    if (wasTypingRef.current && !isTyping && isOpen) {
+      playSound('notify');
+    }
+    wasTypingRef.current = isTyping;
+  }, [isTyping, isOpen, playSound]);
 
   return (
     <>

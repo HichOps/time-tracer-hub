@@ -8,7 +8,7 @@ interface AudioContextType {
   isLoaded: boolean;
   toggleMute: () => void;
   startAmbient: () => void;
-  playSound: (sound: 'click' | 'whoosh' | 'success') => void;
+  playSound: (sound: 'click' | 'whoosh' | 'success' | 'notify') => void;
 }
 
 const AudioContext = createContext<AudioContextType | null>(null);
