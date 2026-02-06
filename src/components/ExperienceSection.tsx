@@ -1,6 +1,7 @@
 import { Shield, Compass, Sparkles, Clock, type LucideIcon } from 'lucide-react';
 import { EXPERIENCE_FEATURES, SECTION_IDS } from '@/constants';
 import { useIntersection } from '@/hooks/useIntersection';
+import FeatureVisual from '@/components/ui/FeatureVisuals';
 import type { Feature } from '@/types';
 
 // Mapping des noms d'icônes vers les composants Lucide
@@ -43,13 +44,17 @@ const ExperienceSection = () => {
             return (
               <div
                 key={feature.title}
-                className={`p-8 rounded-2xl bg-card border border-border hover:border-gold/30 transition-all duration-500 group ${
+                className={`relative p-8 rounded-2xl bg-card border border-border hover:border-gold/30 transition-all duration-500 group overflow-hidden ${
                   isVisible
                     ? 'opacity-100 translate-y-0'
                     : 'opacity-0 translate-y-8'
                 }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
+                {/* Animated background visual */}
+                <FeatureVisual iconName={feature.iconName} />
+
+                <div className="relative z-10">
                 <div className="w-14 h-14 rounded-xl bg-gold/10 flex items-center justify-center mb-6 group-hover:bg-gold/20 transition-colors duration-300">
                   <IconComponent className="w-7 h-7 text-gold" />
                 </div>
@@ -59,6 +64,7 @@ const ExperienceSection = () => {
                 <p className="text-muted-foreground leading-relaxed">
                   {feature.description}
                 </p>
+                </div>
               </div>
             );
           })}
