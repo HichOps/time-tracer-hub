@@ -1,7 +1,14 @@
+import { useState } from 'react';
 import { Clock, MapPin, Mail, Phone } from 'lucide-react';
+import PricingModal from '@/components/modals/PricingModal';
+import FAQModal from '@/components/modals/FAQModal';
 
 const Footer = () => {
+  const [isPricingOpen, setIsPricingOpen] = useState(false);
+  const [isFAQOpen, setIsFAQOpen] = useState(false);
+
   return (
+    <>
     <footer className="bg-secondary/50 border-t border-border">
       <div className="container mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
@@ -45,20 +52,20 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
+                <button
+                  onClick={() => setIsPricingOpen(true)}
                   className="text-muted-foreground hover:text-gold transition-colors"
                 >
                   Tarifs
-                </a>
+                </button>
               </li>
               <li>
-                <a
-                  href="#"
+                <button
+                  onClick={() => setIsFAQOpen(true)}
                   className="text-muted-foreground hover:text-gold transition-colors"
                 >
                   FAQ Temporelle
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -105,6 +112,11 @@ const Footer = () => {
         </div>
       </div>
     </footer>
+
+    {/* Modales */}
+    <PricingModal isOpen={isPricingOpen} onClose={() => setIsPricingOpen(false)} />
+    <FAQModal isOpen={isFAQOpen} onClose={() => setIsFAQOpen(false)} />
+    </>
   );
 };
 
