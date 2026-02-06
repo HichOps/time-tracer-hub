@@ -8,7 +8,26 @@ Webapp immersive pour une agence de voyage temporel de luxe, réalisée dans le 
 
 ---
 
-## 📸 Aperçu du Projet
+## � Sommaire
+
+| Section | Description |
+|---------|-------------|
+| [📸 Aperçu du Projet](#-aperçu-du-projet) | Captures d'écran de l'application |
+| [📝 Description](#-description) | Fonctionnalités principales |
+| [🚀 Genèse du Projet](#-genèse-du-projet) | Workflow Lovable → Optimisation |
+| [🛠 Stack & Outils](#-stack--outils-utilisés) | IA, Assets, Architecture |
+| [🏗️ Architecture Technique](#️-architecture-technique-industrial-grade) | Arborescence & Justifications |
+| [✨ Fonctionnalités Avancées](#-fonctionnalités-avancées) | Curseur, Audio, Chronos 2.0 |
+| [🧠 Retour d'Expérience](#-retour-dexpérience--processus) | Méthodologie "Reclaim & Refactor" |
+| [⚖️ Transparence & Éthique](#️-transparence--éthique) | Déclaration IA & Accessibilité |
+| [📄 Licence](#-licence) | MIT License |
+| [🎤 FAQ Technique](#-faq-technique-préparation-jury) | 11 Questions/Réponses Jury |
+
+<p align="right"><a href="#timetravel-agency---webapp-interactive-">⬆️ Retour en haut</a></p>
+
+---
+
+## �📸 Aperçu du Projet
 
 | Hero Section & Immersion | Modale de Réservation |
 |:---:|:---:|
@@ -48,7 +67,7 @@ Ce projet illustre une démarche de **"Vibe Coding" maîtrisé** : partir d'un p
 * **Refactoring** en architecture industrielle avec types, constantes, et services centralisés.
 
 > 💡 **Takeaway** : Les outils de génération IA sont d'excellents accélérateurs, mais la valeur réside dans la capacité à auditer, restructurer et optimiser le code produit.
-
+<p align="right"><a href="#-sommaire">⬆️ Retour au sommaire</a></p>
 ---
 
 ## �🛠 Stack & Outils Utilisés
@@ -74,6 +93,8 @@ Le projet a été entièrement développé à l'aide d'**outils gratuits** et de
 * **Styling** : Tailwind CSS avec Design System centralisé dans `src/constants/styles.ts`.
 * **Logic Layer** : Custom Hooks (`useQuiz`, `useChatbot`, `useAudio`, `useCursor`, `useParallax`, `useIntersection`) isolant totalement la logique du JSX.
 * **Animations** : Framer Motion (GPU Accelerated) & Mouse Parallax.
+
+<p align="right"><a href="#-sommaire">⬆️ Retour au sommaire</a></p>
 
 ---
 
@@ -158,6 +179,8 @@ time-tracer-hub/
 
 > 🏭 **Industrial Grade** : Cette architecture permet une maintenance aisée, des tests unitaires ciblés et une scalabilité horizontale pour de futures destinations.
 
+<p align="right"><a href="#-sommaire">⬆️ Retour au sommaire</a></p>
+
 ---
 
 ## ✨ Fonctionnalités Avancées
@@ -178,6 +201,8 @@ L'agent utilise un système de **Few-Shot Prompting** pour garantir une immersio
 3. **Localisation Réelle** : L'agence est ancrée à **Lyon Perrache** (12 bis Cour de Verdun Gensoul, 69002) avec un héritage remontant à **1986**.
 4. **Performance Optimisée** : Suppression du code mort (nettoyage des composants Shadcn inutilisés) et lazy-loading systématique.
 
+<p align="right"><a href="#-sommaire">⬆️ Retour au sommaire</a></p>
+
 ---
 
 ## 🧠 Retour d'Expérience & Processus
@@ -188,6 +213,8 @@ Le projet a suivi une méthodologie de **"Reclaim & Refactor"** :
 2. **Phase 2 : Appropriation & Restructuration** : Migration vers VS Code. Le code a été repris en main pour casser le monolithe initial au profit de dossiers `types/`, `constants/`, et `hooks/` dédiés.
 3. **Phase 3 : Polissage "Heisenberg Prod."** : Personnalisation totale de la marque, correction des incohérences temporelles et optimisation des performances (passage au `useMotionValue` pour le curseur).
 
+<p align="right"><a href="#-sommaire">⬆️ Retour au sommaire</a></p>
+
 ---
 
 ## ⚖️ Transparence & Éthique
@@ -196,6 +223,8 @@ Le projet a suivi une méthodologie de **"Reclaim & Refactor"** :
 * **Images** : Synthétisées via Nano Banana.
 * **Accessibilité** : Optimisation des balises `aria-label` et SEO.
 * **Production** : Signé par **Heisenberg Prod.**
+
+<p align="right"><a href="#-sommaire">⬆️ Retour au sommaire</a></p>
 
 ---
 
@@ -246,4 +275,4 @@ Anticipation des questions techniques pour la soutenance orale.
 
 > 💡 **Conseil oral** : Pour chaque réponse, commence par le "quoi" (ce que tu as fait), puis le "pourquoi" (le bénéfice technique ou utilisateur).
 
----
+<p align="right"><a href="#-sommaire">⬆️ Retour au sommaire</a></p>
