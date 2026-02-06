@@ -17,8 +17,8 @@ interface UseAudioReturn extends AudioState {
 
 // URLs des sons (hébergés sur des CDN publics pour le MVP)
 const SOUND_URLS = {
-  // Nappe ambiante drone subtile - son long et atmosphérique
-  ambient: 'https://assets.mixkit.co/active_storage/sfx/2515/2515-preview.mp3',
+  // Pas de nappe ambiante pour éviter la nuisance - désactivé
+  ambient: null,
   click: 'https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3',
   whoosh: 'https://assets.mixkit.co/active_storage/sfx/2554/2554-preview.mp3',
   success: 'https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3',
@@ -51,13 +51,8 @@ export const useAudio = (): UseAudioReturn => {
 
   // Chargement asynchrone des sons - PAS d'autoplay
   useEffect(() => {
-    // Créer l'élément audio ambient (ne joue PAS automatiquement)
-    const ambient = new Audio();
-    ambient.src = SOUND_URLS.ambient;
-    ambient.loop = false; // PAS de boucle - one-shot uniquement
-    ambient.volume = 0; // Commence à 0 pour le fade-in
-    ambient.preload = 'none'; // Ne charge pas tant que non demandé
-    ambientRef.current = ambient;
+    // Ambient désactivé - pas de nappe sonore intrusive
+    ambientRef.current = null;
 
     // Précharger les effets sonores en background
     const preloadSounds = async () => {
@@ -82,48 +77,25 @@ export const useAudio = (): UseAudioReturn => {
       if (fadeIntervalRef.current) {
         clearInterval(fadeIntervalRef.current);
       }
-      if (ambientRef.current) {
-        ambientRef.current.pause();
-        ambientRef.current = null;
-      }
     };
   }, []);
 
   /**
-   * Démarre la nappe ambiante avec un fade-in progressif de 2 secondes
-   * Ne se déclenche qu'après une interaction utilisateur (respect Autoplay)
+   * Placeholder pour l'ambient - désactivé pour éviter la nuisance sonore
+   * Joue juste le whoosh d'interaction à la place
    */
   const startAmbient = useCallback(() => {
-    if (ambientRef.current && !state.isPlaying && !state.isMuted) {
-      const audio = ambientRef.current;
-      audio.volume = 0;
-      
-      audio.play().then(() => {
-        // Fade-in progressif sur 2 secondes
-        const steps = FADE_IN_DURATION / FADE_STEP_INTERVAL;
-        const volumeIncrement = TARGET_AMBIENT_VOLUME / steps;
-        let currentVolume = 0;
-        
-        fadeIntervalRef.current = setInterval(() => {
-          currentVolume += volumeIncrement;
-          if (ambientRef.current) {
-            ambientRef.current.volume = Math.min(currentVolume, TARGET_AMBIENT_VOLUME);
-          }
-          if (currentVolume >= TARGET_AMBIENT_VOLUME) {
-            if (fadeIntervalRef.current) {
-              clearInterval(fadeIntervalRef.current);
-              fadeIntervalRef.current = null;
-            }
-          }
-        }, FADE_STEP_INTERVAL);
-      }).catch(() => {
-        // L'utilisateur n'a pas encore interagi - silencieux
-        console.debug('[Audio] Autoplay bloqué - interaction requise');
-      });
-      
-      setState(prev => ({ ...prev, isPlaying: true }));
+    // Ambient désactivé - on joue juste un effet subtil
+    if (!state.isMuted) {
+      const whoosh = soundsRef.current['whoosh'];
+      if (whoosh) {
+        whoosh.currentTime = 0;
+        whoosh.volume = 0.15; // Plus discret
+        whoosh.play().catch(() => {});
+      }
     }
-  }, [state.isPlaying, state.isMuted]);
+    setState(prev => ({ ...prev, isPlaying: true }));
+  }, [state.isMuted]);
 
   /**
    * Coupe ou réactive instantanément toutes les sources audio
