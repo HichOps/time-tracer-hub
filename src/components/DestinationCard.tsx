@@ -1,6 +1,8 @@
 import { Badge } from '@/components/ui/badge';
 import { useIntersection } from '@/hooks/useIntersection';
 import { useParallax } from '@/hooks/useParallax';
+import { useAudioContext } from '@/contexts/AudioContext';
+import { triggerPremiumConfetti } from '@/utils/confetti';
 
 interface DestinationCardProps {
   id: string;
@@ -29,6 +31,12 @@ const DestinationCard = ({
     invert: true, // L'image bouge dans le sens opposé à la souris
     scale: 1.05,
   });
+  const { playSound } = useAudioContext();
+
+  const handleSelectJourney = () => {
+    triggerPremiumConfetti();
+    playSound('success');
+  };
 
   return (
     <div
@@ -95,7 +103,7 @@ const DestinationCard = ({
 
           {/* Hover CTA */}
           <div className="mt-6 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-            <button className="btn-gold px-6 py-3 text-sm">
+            <button onClick={handleSelectJourney} className="btn-gold px-6 py-3 text-sm">
               <span className="relative z-10">Découvrir</span>
             </button>
           </div>
