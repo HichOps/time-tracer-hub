@@ -3,6 +3,7 @@ import { ChevronDown, Compass } from 'lucide-react';
 import { SECTION_IDS, scrollToSection } from '@/constants';
 import { useAudioContext } from '@/contexts/AudioContext';
 import ChronoQuiz from './ChronoQuiz';
+import VortexBackground from './ui/VortexBackground';
 
 const HeroSection = () => {
   const [isQuizOpen, setIsQuizOpen] = useState(false);
@@ -22,14 +23,16 @@ const HeroSection = () => {
   return (
     <>
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background with gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
+        {/* WebGL Vortex — wormhole tunnel */}
+        <VortexBackground />
+
+        {/* Background with gradient overlay — sits on top of vortex for readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" style={{ zIndex: 2 }} />
         
-        {/* Animated background particles */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-gold/5 blur-3xl animate-float" />
-          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-venetian/5 blur-3xl animate-float animation-delay-200" />
-          <div className="absolute top-1/2 right-1/3 w-64 h-64 rounded-full bg-sunset/5 blur-3xl animate-float animation-delay-400" />
+        {/* Floating stardust accents on top of vortex */}
+        <div className="absolute inset-0 overflow-hidden" style={{ zIndex: 3 }}>
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-gold/3 blur-3xl animate-float" />
+          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-venetian/3 blur-3xl animate-float animation-delay-200" />
         </div>
 
         {/* Content */}
