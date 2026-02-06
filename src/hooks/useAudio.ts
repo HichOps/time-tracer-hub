@@ -17,8 +17,8 @@ interface UseAudioReturn extends AudioState {
 
 // URLs des sons (hébergés sur des CDN publics pour le MVP)
 const SOUND_URLS = {
-  // Nappe ambiante drone subtile (loop: false, on gère manuellement)
-  ambient: 'https://assets.mixkit.co/active_storage/sfx/212/212-preview.mp3',
+  // Nappe ambiante drone subtile - son long et atmosphérique
+  ambient: 'https://assets.mixkit.co/active_storage/sfx/2515/2515-preview.mp3',
   click: 'https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3',
   whoosh: 'https://assets.mixkit.co/active_storage/sfx/2554/2554-preview.mp3',
   success: 'https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3',
@@ -54,7 +54,7 @@ export const useAudio = (): UseAudioReturn => {
     // Créer l'élément audio ambient (ne joue PAS automatiquement)
     const ambient = new Audio();
     ambient.src = SOUND_URLS.ambient;
-    ambient.loop = true; // Loop géré manuellement avec fade
+    ambient.loop = false; // PAS de boucle - one-shot uniquement
     ambient.volume = 0; // Commence à 0 pour le fade-in
     ambient.preload = 'none'; // Ne charge pas tant que non demandé
     ambientRef.current = ambient;
