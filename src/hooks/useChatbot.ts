@@ -52,10 +52,10 @@ export const useChatbot = (): UseChatbotReturn => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Auto-scroll sur nouveaux messages
+  // Auto-scroll fluide sur nouveaux messages et pendant le streaming
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      scrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
     }
   }, [messages, isTyping]);
 

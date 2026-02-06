@@ -83,7 +83,7 @@ const ChatWidget = () => {
 
         {/* Messages */}
         <ScrollArea className="h-80">
-          <div ref={scrollRef} className="p-4 space-y-4">
+          <div className="p-4 space-y-4">
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -108,6 +108,8 @@ const ChatWidget = () => {
               </div>
             ))}
             {isTyping && <TypingIndicator />}
+            {/* Anchor element for smooth auto-scroll with bottom margin */}
+            <div ref={scrollRef} className="h-2" aria-hidden="true" />
           </div>
         </ScrollArea>
 
