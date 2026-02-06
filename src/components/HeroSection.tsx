@@ -41,9 +41,12 @@ const HeroSection = () => {
             </p>
 
             {/* Main Title */}
-            <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-bold leading-tight mb-8 animate-fade-in-up animation-delay-200">
+            <h1
+              className="font-serif text-5xl md:text-7xl lg:text-8xl font-bold leading-tight mb-8 animate-fade-in-up animation-delay-200"
+              style={{ textShadow: '0 0 40px rgba(212,175,55,0.15), 0 2px 8px rgba(0,0,0,0.4)' }}
+            >
               Explorez l'histoire,{' '}
-              <span className="text-gradient-gold">réinventée</span>
+              <span className="text-gradient-gold" style={{ textShadow: '0 0 60px rgba(212,175,55,0.3)' }}>réinventée</span>
             </h1>
 
             {/* Subtitle */}
@@ -52,19 +55,19 @@ const HeroSection = () => {
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up animation-delay-600">
+            <div className="flex flex-col sm:flex-row gap-5 justify-center items-center animate-fade-in-up animation-delay-600">
               <button
                 onClick={handleStartJourney}
-                className="btn-gold text-lg px-10 py-5 animate-pulse-glow"
+                className="btn-gold text-lg px-12 py-5 animate-pulse-glow shadow-lg shadow-gold/20"
               >
                 <span className="relative z-10">Commencer le voyage</span>
               </button>
               <button
                 onClick={handleOpenQuiz}
-                className="px-8 py-4 rounded-lg border-2 border-gold text-gold hover:bg-gold hover:text-background transition-all duration-300 font-semibold flex items-center gap-2"
+                className="px-6 py-3 text-gold/80 hover:text-gold transition-all duration-300 font-medium flex items-center gap-2 group"
               >
-                <Compass className="w-5 h-5" />
-                Me conseiller une époque
+                <Compass className="w-4 h-4 group-hover:rotate-45 transition-transform duration-300" />
+                <span className="border-b border-gold/30 group-hover:border-gold/70 transition-colors">Me conseiller une époque</span>
               </button>
             </div>
           </div>

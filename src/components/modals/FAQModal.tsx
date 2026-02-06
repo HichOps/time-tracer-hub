@@ -38,6 +38,11 @@ const faqItems: FAQItem[] = [
     answer:
       'Chronos est notre assistant IA personnel, intégré directement dans votre interface de voyage. Alimenté par Mistral AI, il vous accompagne avant, pendant et après votre voyage. Il peut recommander des époques selon vos goûts, répondre à vos questions historiques en temps réel, et même ajuster votre itinéraire en cours de route. Il est accessible via la bulle de chat en bas à droite de votre écran.',
   },
+  {
+    question: 'Pourquoi l\'agence est-elle basée à Lyon Perrache ?',
+    answer:
+      'En 1986, le Professeur Heisenberg a découvert la Faille Temporelle de Perrache : un nœud quantique naturel situé sous la gare, au croisement exact des flux du Rhône et de la Saône. Cette confluence unique crée une zone de convergence temporelle que les Romains de Lugdunum pressentaient déjà. Lyon — ville aux deux fleuves, aux traboules et aux passages secrets — est le seul point sur Terre où l\'ouverture d\'un corridor temporel stable est possible sans consommation énergétique astronomique. C\'est notre ancrage, notre héritage et notre fierté depuis 40 ans.',
+  },
 ];
 
 const overlayVariants = {
